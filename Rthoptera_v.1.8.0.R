@@ -1,5 +1,3 @@
-# remotes::install_github("maRce10/warbleR")
-
 Rthoptera <- function() {
   
   # Function to check if a package is installed and install if necessary
@@ -981,7 +979,7 @@ Rthoptera <- function() {
                             choices = NULL, width = '100%'),
                 textInput("sp.name", "Species Name", value = ""),
                 textInput("sound.type", "Sound Type", value = "Calling song"),
-                numericInput("temp", "Temp (°C)", value = NA, min = 0, max = 60, step = 0.1),
+                numericInput("temp", "Temp (Â°C)", value = NA, min = 0, max = 60, step = 0.1),
                 numericInput("hpf", "HPF (kHz)", value = NA, min = 0, max = 15, step = 1),
                 selectInput("dbth", "dB Bandwidth Threshold", choices = c(-3, -10, -20), selected = -20),
                 checkboxInput("total", "Total Bandwidth", value = FALSE),
@@ -1076,7 +1074,7 @@ Rthoptera <- function() {
             "<br> Peak Freq:", round(peak_frequency, 1), "kHz",
             "<br> High Freq:", round(maxfreq, 1), "kHz",
             "<br> Bandwidth:", round(maxfreq - minfreq, 1), "kHz",
-            "<br> Temp:", temp, "°C",
+            "<br> Temp:", temp, "Â°C",
             "<br> HPF:", hpf, "kHz"
           )
           
@@ -1567,6 +1565,7 @@ Rthoptera <- function() {
               numericInput("max_peak_gap", "Max Peak Gap", value = 0.01),
               actionButton("run", "Run Analysis"),
               downloadButton("downloadData", "Download Data"),
+              actionButton("help", "Help"),
               width = 12,
               style = "height: 100%; overflow-y: auto; padding: 10px;"
             ),
@@ -1592,6 +1591,22 @@ Rthoptera <- function() {
     
     # Define the server
     server <- function(input, output, session) {
+      
+      # Define the help modal dialog
+      observeEvent(input$help, {
+        showModal(modalDialog(
+          title = "Help - Parameter Information",
+          HTML("
+        <b>Smoothing Window:</b> Window size (samples) used to smooth the envelope.<br><br>
+        <b>Peakfinder Window:</b> Size of the moving window used for peak detection.<br><br>
+        <b>Peakfinder Threshold:</b> Amplitude threshold for identifying peaks based on their distance to the 'valleys'.<br><br>
+        <b>Max Train Gap:</b> Maximum gap allowed between trains to be considered in the same echeme.<br><br>
+        <b>Max Peak Gap (max_peak_gap):</b> Maximum gap allowed between consecutive peaks to be considered in the same train.<br>
+      "),
+          easyClose = TRUE,
+          footer = modalButton("Close")
+        ))
+      })
       
       temporal_stats <- function(wave, 
                                  specimen.id,
@@ -3110,7 +3125,5 @@ Rthoptera <- function() {
   
 }
 
-
+# Usage
 Rthoptera()
-
-
