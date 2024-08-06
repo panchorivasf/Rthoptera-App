@@ -1,4 +1,4 @@
-# Rthoptera
+# Rthoptera-App
 A Shiny app for standard analysis of insect sounds. The app is multi-page, with separate tabs for each process in the bioacoustics pipeline. It includes the following apps:
 
 Pre-processing:
